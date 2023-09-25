@@ -16,9 +16,13 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <th class="<%= 'bg-warning' if @highlight_column == 'title' %>">
+        <%= link_to 'Movie Title', movies_path(sort: 'title', ratings: @ratings_to_show.map { |rating| [rating, 'checked'] }.to_h), id: 'title_header' %>
+      </th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th class="<%= 'bg-warning' if @highlight_column == 'release_date' %>">
+        <%= link_to 'Release Date', movies_path(sort: 'release_date', ratings: @ratings_to_show.map { |rating| [rating, 'checked'] }.to_h), id: 'release_date_header' %>
+      </th>
       <th>More Info</th>
     </tr>
   </thead>
