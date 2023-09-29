@@ -8,26 +8,19 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-
-    if params[:ratings]
-      @ratings_to_show = params[:ratings].keys
-      session[:ratings] = params[:ratings]  # Update session with selected ratings
-    else
-      # If no ratings selection in form, use session data
-      @ratings_to_show = session[:ratings] || Movie.all_ratings 
-    end
-
+    
     # Store sorting settings in session
     session[:sort] = params[:sort] if params[:sort]
+    session[:ratings] = params[:sort] if params[:ratings]
 
     # Use session values if params are not present
     params[:sort] ||= session[:sort]
-    # params[:ratings] ||= session[:ratings]
+    params[:ratings] ||= session[:ratings]
 
     # params[:sort] != nil ? (session[:sort] = params[:sort]) : (params[:sort] = session[:sort])
     # params[:ratings] != nil ? (session[:ratings] = params[:ratings]) : (params[:ratings] = session[:ratings])
     # @ratings_to_show = params[:ratings] == nil ? (session[:ratings] == nil ? Movie.all_ratings : [] ) : params[:ratings].keys
-    # @ratings_to_show = params[:ratings] ? params[:ratings].keys  : (session[:ratings] ? [] : Movie.all_ratings )
+    @ratings_to_show = params[:ratings] ? params[:ratings].keys  : (session[:ratings] ? [] : Movie.all_ratings )
     @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort])
     @highlight_column = params[:sort]
   end
