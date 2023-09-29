@@ -15,6 +15,12 @@ class MoviesController < ApplicationController
     params[:sort] ||= session[:sort]
     params[:ratings] ||= session[:ratings]
 
+    if params[:ratings].present?
+      redirect_to(movies_path(ratings: params[:ratings]))
+    elsif params[:sort].present?
+      redirect_to(movies_path(sort: params[:sort]))
+    end
+
     # params[:sort] != nil ? (session[:sort] = params[:sort]) : (params[:sort] = session[:sort])
     # params[:ratings] != nil ? (session[:ratings] = params[:ratings]) : (params[:ratings] = session[:ratings])
     # @ratings_to_show = params[:ratings] == nil ? (session[:ratings] == nil ? Movie.all_ratings : [] ) : params[:ratings].keys
