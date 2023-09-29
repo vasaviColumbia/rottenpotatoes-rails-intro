@@ -8,12 +8,10 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    
-    # Store sorting settings in session
-    session[:sort] = params[:sort] if params[:sort]
-    session[:ratings] = params[:sort] if params[:ratings]
 
-    # Use session values if params are not present
+    session[:sort] = params[:sort] if params[:sort]
+    session[:ratings] = params[:ratings] if params[:ratings]
+
     params[:sort] ||= session[:sort]
     params[:ratings] ||= session[:ratings]
 
