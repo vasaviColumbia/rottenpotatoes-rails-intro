@@ -18,8 +18,6 @@ class MoviesController < ApplicationController
     @ratings_to_show = params[:ratings] ? params[:ratings].keys  : (session[:ratings] ? [] : Movie.all_ratings )
     @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort])
     @highlight_column = params[:sort]
-
-    render :index
   end
 
   def new
