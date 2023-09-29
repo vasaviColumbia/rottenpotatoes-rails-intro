@@ -9,9 +9,18 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.all_ratings
 
-    session[:sort] = params[:sort] if params[:sort]
-    session[:ratings] = params[:ratings] if params[:ratings]
+    if params[:ratings]
+      @ratings_to_show = params[:ratings].keys
+      session[:ratings] = params[:ratings]  # Update session with selected ratings
+    else
+      # If no ratings selection in form, use session data
+      @ratings_to_show = session[:ratings] || []
+    end
 
+    # Store sorting settings in session
+    session[:sort] = params[:sort] if params[:sort]
+
+    # Use session values if params are not present
     params[:sort] ||= session[:sort]
     params[:ratings] ||= session[:ratings]
 
