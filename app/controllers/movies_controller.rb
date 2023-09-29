@@ -15,18 +15,21 @@ class MoviesController < ApplicationController
     params[:sort] ||= session[:sort]
     params[:ratings] ||= session[:ratings]
 
+    @ratings_to_show = params[:ratings] ? params[:ratings].keys  : (session[:ratings] ? [] : Movie.all_ratings )
+    @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort])
+    @highlight_column = params[:sort]
+
     if params[:ratings].present?
       redirect_to(movies_path(ratings: params[:ratings]))
     elsif params[:sort].present?
       redirect_to(movies_path(sort: params[:sort]))
+    elsif params[:ratings].blank? && session[:ratings].blank?
+      render :index
     end
 
     # params[:sort] != nil ? (session[:sort] = params[:sort]) : (params[:sort] = session[:sort])
     # params[:ratings] != nil ? (session[:ratings] = params[:ratings]) : (params[:ratings] = session[:ratings])
     # @ratings_to_show = params[:ratings] == nil ? (session[:ratings] == nil ? Movie.all_ratings : [] ) : params[:ratings].keys
-    @ratings_to_show = params[:ratings] ? params[:ratings].keys  : (session[:ratings] ? [] : Movie.all_ratings )
-    @movies = Movie.with_ratings(@ratings_to_show).order(params[:sort])
-    @highlight_column = params[:sort]
   end
 
   def new
